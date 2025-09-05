@@ -30,7 +30,7 @@ const Layout = () => {
       <header className="header">
         <div className="header-content">
           <div className="logo">
-            <h1>📚 School Supplies</h1>
+            <h1>📚 Supply Pal</h1>
           </div>
           
           <nav className="nav">

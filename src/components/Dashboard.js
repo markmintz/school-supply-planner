@@ -1,25 +1,11 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 import { useAuth } from '../context/AuthContext';
-import { getUserClasses, getAllSuppliesForUser, getSuppliesByIds, getUserById } from '../data/mockData';
+import { getUserClasses, getSuppliesByIds, getUserById } from '../data/mockData';
 
 const Dashboard = () => {
   const { currentUser } = useAuth();
   const userClasses = getUserClasses(currentUser);
-  const allSupplies = getAllSuppliesForUser(currentUser);
-
-  const getSupplyCategories = (supplies) => {
-    const categories = {};
-    supplies.forEach(supply => {
-      if (!categories[supply.category]) {
-        categories[supply.category] = [];
-      }
-      categories[supply.category].push(supply);
-    });
-    return categories;
-  };
-
-  const categories = getSupplyCategories(allSupplies);
 
   const getWelcomeMessage = () => {
     switch (currentUser.role) {
@@ -79,39 +65,6 @@ const Dashboard = () => {
               <p>No classes found.</p>
             </div>
           )}
-        </div>
-
-        <div className="supplies-overview">
-          <h3>Supply Overview</h3>
-          {Object.keys(categories).length > 0 ? (
-            <div className="supply-categories">
-              {Object.entries(categories).map(([category, supplies]) => (
-                <div key={category} className="category-card">
-                  <h4>{category}</h4>
-                  <div className="category-supplies">
-                    {supplies.slice(0, 3).map(supply => (
-                      <span key={supply.id} className="supply-tag">
-                        {supply.name}
-                      </span>
-                    ))}
-                    {supplies.length > 3 && (
-                      <span className="more-supplies">
-                        +{supplies.length - 3} more
-                      </span>
-                    )}
-                  </div>
-                </div>
-              ))}
-            </div>
-          ) : (
-            <div className="no-supplies">
-              <p>No supplies needed.</p>
-            </div>
-          )}
-          
-          <Link to="/supplies" className="view-all-supplies">
-            View Complete Supply List →
-          </Link>
         </div>
       </div>
     </div>
