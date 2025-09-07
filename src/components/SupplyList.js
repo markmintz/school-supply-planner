@@ -8,17 +8,22 @@ const SupplyList = () => {
   const allSupplies = getAllSuppliesForUser(currentUser);
   const userClasses = getUserClasses(currentUser);
   
+  // For teachers, add candy supplies to their supply list
+  const teacherSupplies = currentUser.role === 'teacher' 
+    ? [...allSupplies, { id: 22, name: 'Bag of Twizzlers', category: 'Candy' }, { id: 23, name: 'Assorted Candy', category: 'Candy' }]
+    : allSupplies;
+  
   const [filterCategory, setFilterCategory] = useState('all');
   const [sortBy, setSortBy] = useState('category');
   const [checkedSupplies, setCheckedSupplies] = useState(new Set());
 
   // Get unique categories
-  const categories = [...new Set(allSupplies.map(supply => supply.category))];
+  const categories = [...new Set(teacherSupplies.map(supply => supply.category))];
 
   // Filter supplies
   const filteredSupplies = filterCategory === 'all' 
-    ? allSupplies 
-    : allSupplies.filter(supply => supply.category === filterCategory);
+    ? teacherSupplies 
+    : teacherSupplies.filter(supply => supply.category === filterCategory);
 
   // Sort supplies
   const sortedSupplies = [...filteredSupplies].sort((a, b) => {
@@ -71,7 +76,7 @@ const SupplyList = () => {
           <h1>Complete Supply List</h1>
           <p className="header-description">
             {currentUser.role === 'teacher' 
-              ? 'All supplies needed for your classes'
+              ? 'All supplies needed for your classes (including teacher candy supplies)'
               : currentUser.role === 'student'
               ? 'All supplies you need for your classes'
               : `All supplies needed for ${children.map(c => c.name).join(' and ')}'s classes`}
@@ -87,9 +92,9 @@ const SupplyList = () => {
             value={filterCategory} 
             onChange={(e) => setFilterCategory(e.target.value)}
           >
-            <option value="all">All Categories ({allSupplies.length})</option>
+            <option value="all">All Categories ({teacherSupplies.length})</option>
             {categories.map(category => {
-              const count = allSupplies.filter(s => s.category === category).length;
+              const count = teacherSupplies.filter(s => s.category === category).length;
               return (
                 <option key={category} value={category}>
                   {category} ({count})
@@ -158,20 +163,27 @@ const SupplyList = () => {
                         </div>
                       </div>
                       
-                      <div className="supply-classes">
-                        <span className="classes-label">Needed for:</span>
-                        <div className="class-list">
-                          {relatedClasses.map(cls => (
-                            <Link 
-                              key={cls.id} 
-                              to={`/class/${cls.id}`} 
-                              className="class-link"
-                            >
-                              {cls.name}
-                            </Link>
-                          ))}
+                      {supply.category !== 'Candy' && (
+                        <div className="supply-classes">
+                          <span className="classes-label">Needed for:</span>
+                          <div className="class-list">
+                            {relatedClasses.map(cls => (
+                              <Link 
+                                key={cls.id} 
+                                to={`/class/${cls.id}`} 
+                                className="class-link"
+                              >
+                                {cls.name}
+                              </Link>
+                            ))}
+                          </div>
                         </div>
-                      </div>
+                      )}
+                      {supply.category === 'Candy' && (
+                        <div className="supply-classes">
+                          <span className="classes-label">Teacher Supply</span>
+                        </div>
+                      )}
                     </div>
                   );
                 })}

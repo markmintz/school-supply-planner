@@ -21,7 +21,10 @@ export const supplyItems = [
   { id: 17, name: 'Erasers (Pink Pearl)', category: 'Writing' },
   { id: 18, name: 'Pencil Sharpener', category: 'General' },
   { id: 19, name: 'Backpack', category: 'General' },
-  { id: 20, name: 'Lunch Box', category: 'General' }
+  { id: 20, name: 'Lunch Box', category: 'General' },
+  { id: 21, name: 'White-out', category: 'Writing' },
+  { id: 22, name: 'Bag of Twizzlers', category: 'Candy' },
+  { id: 23, name: 'Assorted Candy', category: 'Candy' }
 ];
 
 // Classes with their required supplies
@@ -51,7 +54,7 @@ export const classes = [
     grade: 5,
     subject: 'English',
     room: '302',
-    requiredSupplies: [1, 6, 7, 8, 9, 14, 17]
+    requiredSupplies: [1, 6, 7, 8, 9, 14, 17, 21]
   },
   {
     id: 4,
